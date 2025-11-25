@@ -116,14 +116,16 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
         
-        /* Sticky Header Background */
+        /* New Sticky Header Background with subtle grid */
         .sticky-nav-bg {
-            background-color: rgba(2, 6, 23, 0.9); 
+            background-color: rgba(2, 6, 23, 0.85); /* Slate 950 with opacity */
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.15); /* Cyan border */
+            /* Subtle technical grid overlay */
             background-image: 
-                linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+                linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
             background-size: 24px 24px;
             box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5);
         }
@@ -550,6 +552,16 @@
                 videoUrl: "https://www.youtube.com/embed/ax-uJxZez70", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1slMW0wPzH-OtjaiG_b-mvLUKth1jvfD3&sz=w1000"
             },
+             { 
+                id: 15, 
+                title: "The AI-Native Mindset", 
+                category: "Strategy", 
+                duration: "06:45", 
+                pathwayId: 4,
+                icon: "Lightbulb", 
+                videoUrl: "https://www.youtube.com/embed/gmkUN8e2DBA", 
+                thumbnail: "https://drive.google.com/thumbnail?id=1_s3RZt6pIFEUDooItbyjDI6E7hUDiuPP&sz=w1000"
+            },
         ];
 
         // Component: Video Modal
@@ -656,7 +668,7 @@
                                     </div>
                                     <p className="text-slate-400 text-sm leading-relaxed">
                                         In this module, we dive deep into <strong>{module.title}</strong>. 
-                                        This session is crucial for understanding the broader context of AI-Native Software Engineering. 
+                                        This session is crucial for understanding the broader context of AI-Driven Software Engineering. 
                                         Prepare to take notes on key architectural patterns and implementation strategies.
                                     </p>
                                 </div>
@@ -714,6 +726,7 @@
                     title: "AI Workflow Integration",
                     description: "The strategic capstone. Elevate focus from single AI systems to architecting entire AI-native organizations.",
                     modules: [
+                        { name: "The AI-Native Mindset", moduleId: 15, desc: "Understanding the shift to AI-Native engineering." },
                         { name: "Solving the AI Productivity Puzzle", moduleId: 5, desc: "Overcoming the 'Stage 2 Bottleneck' to unlock true gains." },
                         { name: "Building with AI: Vibe to Spec", moduleId: 3, desc: "Structured Spec-Driven Development vs. chaotic 'vibe coding'." },
                         { name: "A Developer's Guide to Cursor AI", moduleId: 6, desc: "Redefining the developer's role to 'Expert Conductor'." },
@@ -946,7 +959,7 @@
                                     Our practice is built on more than three decades of engineering leadership across mission-critical systems, high-performance platforms, and large-scale digital transformation. With deep roots in designing ultra-reliable, low-latency, cloud-native architectures—spanning financial services, telecommunications, emergency services, and logistics—we bring a level of technical rigour and operational discipline rarely found in the AI consulting space.
                                 </p>
                                 <p>
-                                    We have led the architecture and delivery of systems that process millions of real-time events with 99.9999%+ availability, modernised legacy monoliths into event-driven microservices, and established SRE, observability, and CI/CD standards across enterprise engineering organisations. <span className="text-cyan-400 font-semibold">This background directly informs our approach to AI: not as a tool, but as an engineering discipline requiring governance, repeatability, and production-grade foundations.</span>
+                                    We have led the architecture and delivery of systems that process millions of real-time events with 99.99%+ availability, modernised legacy monoliths into event-driven microservices, and established SRE, observability, and CI/CD standards across enterprise engineering organisations. <span className="text-cyan-400 font-semibold">This background directly informs our approach to AI: not as a tool, but as an engineering discipline requiring governance, repeatability, and production-grade foundations.</span>
                                 </p>
                                 <p>
                                     Most recently, we have supported multiple software development organisations in evolving beyond ad-hoc AI experimentation into fully structured, AI-native engineering models. This has included introducing scalable RAG pipelines, prompt-contract governance, context-engineering standards, and AI-augmented development workflows embedded directly into their SDLCs—resulting in safer AI behaviour, measurable productivity gains, and sustainable platforms for ongoing innovation.
@@ -1008,7 +1021,7 @@
                     
                     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
                         scrolled 
-                        ? 'sticky-nav-bg py-3 border-cyan-500/20' 
+                        ? 'sticky-nav-bg py-3' 
                         : 'bg-transparent border-transparent py-6'
                     }`}>
                         <div className="container mx-auto px-6 flex justify-center items-center">
@@ -1064,7 +1077,7 @@
                     <main className="container mx-auto px-6 pb-16 relative z-10">
                         <div className="flex items-center gap-4 mb-8 border-b border-slate-800/50 pb-4">
                             <h2 className="text-2xl font-bold text-white">Course Modules</h2>
-                            <span className="px-3 py-1 bg-cyan-950/30 border border-cyan-500/20 rounded-full text-cyan-400 text-xs font-mono">14 VIDEOS</span>
+                            <span className="px-3 py-1 bg-cyan-950/30 border border-cyan-500/20 rounded-full text-cyan-400 text-xs font-mono">15 VIDEOS</span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
