@@ -1024,6 +1024,7 @@
             const [showInfographic, setShowInfographic] = useState(false);
             const [activeInfoModal, setActiveInfoModal] = useState(null);
             const [scrolled, setScrolled] = useState(false);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // New State for Mobile Menu
 
             useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -1155,21 +1156,69 @@
                     </div>
                     
                     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
-                        scrolled 
-                        ? 'sticky-nav-bg py-3' 
+                        scrolled || mobileMenuOpen
+                        ? 'sticky-nav-bg py-3 bg-slate-950/90' 
                         : 'bg-transparent border-transparent py-6'
                     }`}>
-                        <div className="container mx-auto px-6 flex justify-center items-center">
-                            <div className="flex flex-col items-center">
-                                <span className={`font-black text-white tracking-tight leading-none flex items-center gap-2 drop-shadow-lg transition-all duration-300 ${scrolled ? 'text-2xl' : 'text-3xl md:text-4xl'}`}>
+                        <div className="container mx-auto px-6 flex justify-between items-center relative z-50">
+                            {/* Logo Section - Modified layout for menu compatibility */}
+                            <div className="flex flex-col items-start cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+                                <span className={`font-black text-white tracking-tight leading-none flex items-center gap-2 drop-shadow-lg transition-all duration-300 ${scrolled ? 'text-2xl' : 'text-2xl md:text-3xl'}`}>
                                     Talent Pool 
                                     <span className="text-cyan-400 glow-text">
                                         AI&trade;
                                     </span>
                                 </span>
-                                <span className={`font-bold text-cyan-500 tracking-[0.3em] uppercase mt-1 relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-12 after:h-0.5 after:bg-cyan-500/30 transition-all duration-300 ${scrolled ? 'text-xs' : 'text-sm md:text-base'}`}>
+                                <span className={`font-bold text-cyan-500 tracking-[0.3em] uppercase mt-1 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-12 after:h-0.5 after:bg-cyan-500/30 transition-all duration-300 ${scrolled ? 'text-[10px]' : 'text-xs md:text-sm'}`}>
                                     Consultancy
                                 </span>
+                            </div>
+
+                            {/* Desktop Menu - Hidden on Mobile */}
+                            <div className="hidden md:flex items-center gap-4">
+                                <button onClick={() => setActiveInfoModal('about')} className="px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-bold hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all shadow-[0_0_15px_rgba(6,182,212,0.1)]">About</button>
+                                <button onClick={() => setActiveInfoModal('services')} className="px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-bold hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all shadow-[0_0_15px_rgba(6,182,212,0.1)]">Services</button>
+                                <button onClick={() => setActiveInfoModal('contact')} className="px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-bold hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all shadow-[0_0_15px_rgba(6,182,212,0.1)]">Contact Us</button>
+                            </div>
+
+                            {/* Mobile Toggle Button - Hidden on Desktop */}
+                            <button className="md:hidden text-slate-300 hover:text-white transition-colors" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                <LucideIcon name={mobileMenuOpen ? "X" : "Menu"} size={28} />
+                            </button>
+                        </div>
+
+                        {/* Mobile Dropdown Menu */}
+                        <div className={`md:hidden absolute top-full left-0 w-full bg-slate-900/95 backdrop-blur-xl border-b border-slate-800 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <div className="flex flex-col p-4 space-y-2">
+                                <button 
+                                    onClick={() => { setActiveInfoModal('about'); setMobileMenuOpen(false); }} 
+                                    className="flex items-center gap-4 p-4 rounded-xl hover:bg-slate-800/50 active:bg-slate-800 text-slate-200 transition-all border border-transparent hover:border-slate-700/50"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 shrink-0">
+                                        <LucideIcon name="Info" size={20} />
+                                    </div>
+                                    <span className="font-bold text-lg">About</span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => { setActiveInfoModal('services'); setMobileMenuOpen(false); }} 
+                                    className="flex items-center gap-4 p-4 rounded-xl hover:bg-slate-800/50 active:bg-slate-800 text-slate-200 transition-all border border-transparent hover:border-slate-700/50"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 shrink-0">
+                                        <LucideIcon name="Briefcase" size={20} />
+                                    </div>
+                                    <span className="font-bold text-lg">Services</span>
+                                </button>
+                                
+                                <button 
+                                    onClick={() => { setActiveInfoModal('contact'); setMobileMenuOpen(false); }} 
+                                    className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border border-cyan-500/30 text-cyan-100 mt-2 active:scale-[0.98] transition-all"
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-300 shrink-0">
+                                        <LucideIcon name="Mail" size={20} />
+                                    </div>
+                                    <span className="font-bold text-lg">Contact Us</span>
+                                </button>
                             </div>
                         </div>
                     </nav>
