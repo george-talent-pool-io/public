@@ -142,6 +142,38 @@
             z-index: 50;
             opacity: 0.15;
         }
+
+        /* Animation Keyframes for Modals */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Gradient Animation for Title */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradientMove 6s ease infinite;
+        }
+        
+        /* Glow text effect */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -180,7 +212,7 @@
             return <span ref={ref} className="inline-flex items-center justify-center" style={{ minWidth: size, minHeight: size }} />;
         };
 
-        // --- COMBINED NEURAL BACKGROUND ANIMATION (Options 1 + 2 + 3) ---
+        // --- COMBINED NEURAL BACKGROUND ANIMATION ---
         const NeuralBackground = () => {
             const canvasRef = useRef(null);
 
@@ -201,7 +233,7 @@
                 const maxDataParticles = 40;
                 
                 let mouse = { x: null, y: null };
-                let lastMouse = { x: null, y: null }; // To track movement distance for ripples
+                let lastMouse = { x: null, y: null }; 
 
                 const resize = () => {
                     width = window.innerWidth;
@@ -211,7 +243,6 @@
                     initNodes();
                 };
 
-                // --- 1. NODE PARTICLE (Structure) ---
                 class NodeParticle {
                     constructor() {
                         this.x = Math.random() * width;
@@ -236,7 +267,6 @@
                     }
                 }
 
-                // --- 2. FLOW PARTICLE (Energy/Mouse Trail) ---
                 class FlowParticle {
                     constructor(x, y) {
                         this.x = x;
@@ -262,13 +292,12 @@
                     }
                 }
 
-                // --- 3. RIPPLE (Holographic Wave) ---
                 class Ripple {
                     constructor(x, y) {
                         this.x = x;
                         this.y = y;
                         this.radius = 10;
-                        this.maxRadius = 100; // How big the wave gets
+                        this.maxRadius = 100;
                         this.life = 1.0;
                         this.decay = 0.02;
                         this.growthSpeed = 2;
@@ -282,7 +311,6 @@
                     draw() {
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                        // Very subtle stroke
                         ctx.strokeStyle = `rgba(6, 182, 212, ${this.life * 0.3})`; 
                         ctx.lineWidth = 2;
                         ctx.stroke();
@@ -299,7 +327,6 @@
                 const animate = () => {
                     ctx.clearRect(0, 0, width, height);
                     
-                    // 1. Draw Neural Mesh (Layer 1)
                     nodes.forEach(p => {
                         p.update();
                         p.draw();
@@ -331,7 +358,6 @@
                         }
                     });
 
-                    // 2. Draw Ripples (Layer 2 - Below particles but above mesh)
                     for (let i = ripples.length - 1; i >= 0; i--) {
                         const r = ripples[i];
                         r.update();
@@ -341,7 +367,6 @@
                         }
                     }
 
-                    // 3. Draw Data Flow (Layer 3 - Top)
                     if (mouse.x != null) {
                         if (dataStream.length < maxDataParticles) {
                             dataStream.push(new FlowParticle(mouse.x, mouse.y));
@@ -365,13 +390,11 @@
                     const currentX = e.clientX;
                     const currentY = e.clientY;
                     
-                    // Option 3 Logic: Spawn ripple only if mouse moved enough distance
                     if (lastMouse.x !== null) {
                         const dx = currentX - lastMouse.x;
                         const dy = currentY - lastMouse.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         
-                        // Only create ripple every ~50px of movement to prevent clutter
                         if (dist > 50) {
                             ripples.push(new Ripple(currentX, currentY));
                             lastMouse.x = currentX;
@@ -410,7 +433,7 @@
             return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
         };
 
-        // Data with real links
+        // Data with real links and NEW POSTERS
         const courseModules = [
             { 
                 id: 1, 
@@ -419,6 +442,7 @@
                 duration: "08:27", 
                 pathwayId: 1,
                 icon: "MessageSquare",
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/M6ZYPHuSMZ0", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1Zmyas2SXCJseDyMiP1jPNWk5Bd0cop0x&sz=w1000"
             },
@@ -429,6 +453,7 @@
                 duration: "06:00", 
                 pathwayId: 1,
                 icon: "Layers", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/Lpj2rmca-W4", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1gdVOWhLDdZ_h3iU2DMQAORGgsavdgIaT&sz=w1000"
             },
@@ -439,6 +464,7 @@
                 duration: "08:09", 
                 pathwayId: 4,
                 icon: "Brain", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/JAgcwrBbFHM", 
                 thumbnail: "https://drive.google.com/thumbnail?id=160TEJCDRC8rSDexW2Evya-6Kf5dVJRmD&sz=w1000"
             },
@@ -449,6 +475,7 @@
                 duration: "06:24", 
                 pathwayId: 3,
                 icon: "Zap", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/NLa5oeXceF4", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1Qrf2qpCnUspZPveHj0xE51YV25AbmpcU&sz=w1000"
             },
@@ -459,6 +486,7 @@
                 duration: "06:58", 
                 pathwayId: 4,
                 icon: "Shield", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/v4HWAFGELqU", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1Ua-hfEt3HfizHrlk-olIOphaM1fTkA_n&sz=w1000"
             },
@@ -469,6 +497,7 @@
                 duration: "05:12", 
                 pathwayId: 4,
                 icon: "Terminal", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/Jf24fbJfvos", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1kPd4C4i0LjmS1PjJ7n4KusoJN9lL1DKM&sz=w1000"
             },
@@ -479,6 +508,7 @@
                 duration: "05:57", 
                 pathwayId: 4,
                 icon: "Search", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/h4ifldZqUrE", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1EWmnoZ4-Gk0sF7_3R_kfRY8fWxQ9Wgf0&sz=w1000"
             },
@@ -489,6 +519,7 @@
                 duration: "06:30", 
                 pathwayId: 3,
                 icon: "Code", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/aPA6Q-p8GTo", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1JobJItqw8FQC-gawZknsZyxOe5B53peW&sz=w1000"
             },
@@ -499,6 +530,7 @@
                 duration: "07:23", 
                 pathwayId: 2,
                 icon: "Terminal", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/xkAZQWgb1UQ", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1Ugpi-6TY9ldDFOfOTPjdFKMjKext0cTc&sz=w1000"
             },
@@ -509,6 +541,7 @@
                 duration: "07:13", 
                 pathwayId: 2,
                 icon: "Cpu", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/EzNt6kR_3sU", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1mEaHIXfllGtQrBjGETQlF2F80VZ_Z9eG&sz=w1000"
             },
@@ -519,6 +552,7 @@
                 duration: "07:56", 
                 pathwayId: 3,
                 icon: "Brain", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/e1mph0KbaKg", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1uUNsv67bgdNkpVbqeMszzWfrsQhRGbgU&sz=w1000"
             },
@@ -529,6 +563,7 @@
                 duration: "06:12", 
                 pathwayId: 2,
                 icon: "MessageSquare", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/NPiFMTHBnhY", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1mOzJnJstQQr7kRbmlWJwyqXacu72zNzD&sz=w1000"
             },
@@ -539,6 +574,7 @@
                 duration: "05:41", 
                 pathwayId: 2,
                 icon: "Shield", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/6iyfCXgQA-s", 
                 thumbnail: "https://drive.google.com/thumbnail?id=15XZ5xwa9QuILG_rOi-uIL59oxLfiQQUH&sz=w1000"
             },
@@ -549,6 +585,7 @@
                 duration: "07:19", 
                 pathwayId: 1,
                 icon: "FileText", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/ax-uJxZez70", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1slMW0wPzH-OtjaiG_b-mvLUKth1jvfD3&sz=w1000"
             },
@@ -559,16 +596,82 @@
                 duration: "06:45", 
                 pathwayId: 4,
                 icon: "Lightbulb", 
+                type: "video",
                 videoUrl: "https://www.youtube.com/embed/gmkUN8e2DBA", 
                 thumbnail: "https://drive.google.com/thumbnail?id=1_s3RZt6pIFEUDooItbyjDI6E7hUDiuPP&sz=w1000"
             },
+            { 
+                id: 16, 
+                title: "Agentic AI: Secret Blueprints", 
+                category: "Agentic AI", 
+                duration: "07:18", 
+                pathwayId: 3,
+                icon: "Bot", 
+                type: "video",
+                videoUrl: "https://www.youtube.com/embed/MfgIojzbBbc", 
+                thumbnail: "https://drive.google.com/thumbnail?id=1rAQUrM_HpqmaK9gYG1PVdDb_1mqVVthp&sz=w1000"
+            },
+            { 
+                id: 17, 
+                title: "RAG vs FineTuning", 
+                category: "Architecture", 
+                duration: "08:39", 
+                pathwayId: 1,
+                icon: "Scale", 
+                type: "video",
+                videoUrl: "https://www.youtube.com/embed/V3dc_-SUJsE", 
+                thumbnail: "https://drive.google.com/thumbnail?id=1FZhGEnCjkxSn9oYqf6twGGT_QaqsJM0e&sz=w1000"
+            },
+            { 
+                id: 18, 
+                title: "Fine Tuning Enterprise LLMs", 
+                category: "Architecture", 
+                duration: "08:54", 
+                pathwayId: 1,
+                icon: "Sliders", 
+                type: "video",
+                videoUrl: "https://www.youtube.com/embed/jG5FcQLob2s", 
+                thumbnail: "https://drive.google.com/thumbnail?id=1lecp4uDk3K3LTP7cYvT3HEp_yozWaZnt&sz=w1000"
+            },
+            { 
+                id: 19, 
+                title: "AI & The Software Engineer", 
+                category: "Strategy", 
+                duration: "07:24", 
+                pathwayId: 4,
+                icon: "UserCog", 
+                type: "video",
+                videoUrl: "https://www.youtube.com/embed/2tEV5TmYyTA", 
+                thumbnail: "https://drive.google.com/thumbnail?id=1JD1PMRZxWpd9eI7IjDQ6v8biBphh_FtC&sz=w1000"
+            },
+            { 
+                id: 101, 
+                title: "Thriving in the AI Era", 
+                category: "Resource", 
+                duration: "Poster", 
+                // No pathwayId
+                icon: "FileImage", 
+                type: "poster",
+                thumbnail: "https://drive.google.com/thumbnail?id=15tWL2NKak7gebrdUFMSoFdZV8D2PnywB&sz=w1000",
+                fullImage: "https://drive.google.com/thumbnail?id=15tWL2NKak7gebrdUFMSoFdZV8D2PnywB&sz=w4000"
+            },
+            { 
+                id: 102, 
+                title: "The AI Tsunami", 
+                category: "Resource", 
+                duration: "Poster", 
+                // No pathwayId
+                icon: "FileImage", 
+                type: "poster",
+                thumbnail: "https://drive.google.com/thumbnail?id=1Z1tW6AQPYNf9q6mIwle6mzCf405KKMrt&sz=w1000",
+                fullImage: "https://drive.google.com/thumbnail?id=1Z1tW6AQPYNf9q6mIwle6mzCf405KKMrt&sz=w4000"
+            }
         ];
 
-        // Component: Video Modal
+        // Component: Video Modal (Unchanged essentially, minor styling)
         const VideoModal = ({ module, onClose }) => {
             const [isPlaying, setIsPlaying] = useState(false);
             
-            // Lock body scroll when modal is open
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
                 return () => {
@@ -580,18 +683,12 @@
 
             return ReactDOM.createPortal(
                 <div className="relative z-[9999]">
-                    {/* Fixed Backdrop */}
                     <div 
                         className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
                         onClick={onClose}
                     ></div>
-
-                    {/* Scrollable Container */}
                     <div className="fixed inset-0 overflow-y-auto">
-                        {/* Centering Wrapper - min-h-full ensures centering, p-4 adds safe zone */}
                         <div className="flex min-h-full items-center justify-center p-4 text-center">
-                            
-                            {/* Modal Content */}
                             <div className="relative w-full max-w-4xl bg-slate-900/90 border border-cyan-500/30 rounded-2xl shadow-[0_0_50px_rgba(8,145,178,0.2)] overflow-hidden animate-fade-in-up backdrop-blur-xl text-left">
                                 <div className="flex justify-between items-center p-4 border-b border-slate-800/50 bg-slate-900/50">
                                     <h3 className="text-lg font-semibold text-white flex items-center gap-2">
@@ -602,12 +699,8 @@
                                         <LucideIcon name="X" size={24} />
                                     </button>
                                 </div>
-                                
-                                {/* Video Player Area */}
                                 <div className="aspect-video bg-black relative flex flex-col items-center justify-center group overflow-hidden">
-                                    
                                     {!isPlaying ? (
-                                        /* Thumbnail / Start Screen */
                                         <div 
                                             className="absolute inset-0 w-full h-full flex flex-col items-center justify-center cursor-pointer"
                                             onClick={() => setIsPlaying(true)}
@@ -622,14 +715,8 @@
                                                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
                                                 </>
                                             ) : (
-                                                <>
-                                                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 opacity-80"></div>
-                                                    <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                                                        <div className="w-32 h-32 border-4 border-cyan-500 rounded-full animate-ping"></div>
-                                                    </div>
-                                                </>
+                                                <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 opacity-80"></div>
                                             )}
-                                            
                                             <div className="relative z-10 flex flex-col items-center gap-4">
                                                 <div className="w-20 h-20 rounded-full bg-cyan-500/10 border-2 border-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_30px_rgba(34,211,238,0.3)] backdrop-blur-sm">
                                                     <LucideIcon name="Play" className="text-white ml-1" size={32} />
@@ -638,25 +725,16 @@
                                             </div>
                                         </div>
                                     ) : (
-                                        /* Actual Video Player */
-                                        module.videoUrl ? (
-                                            <iframe 
-                                                src={module.videoUrl}
-                                                title={module.title}
-                                                className="absolute inset-0 w-full h-full z-20"
-                                                frameBorder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                                allowFullScreen
-                                            ></iframe>
-                                        ) : (
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
-                                                <LucideIcon name="AlertCircle" size={48} className="mb-4 text-red-400" />
-                                                <p>No video URL provided for this module.</p>
-                                            </div>
-                                        )
+                                        <iframe 
+                                            src={module.videoUrl}
+                                            title={module.title}
+                                            className="absolute inset-0 w-full h-full z-20"
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                        ></iframe>
                                     )}
                                 </div>
-                                
                                 <div className="p-6 bg-slate-900/80">
                                     <div className="flex items-center gap-3 mb-4">
                                         <span className="px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]">
@@ -668,8 +746,7 @@
                                     </div>
                                     <p className="text-slate-400 text-sm leading-relaxed">
                                         In this module, we dive deep into <strong>{module.title}</strong>. 
-                                        This session is crucial for understanding the broader context of AI-Driven Software Engineering. 
-                                        Prepare to take notes on key architectural patterns and implementation strategies.
+                                        This session is crucial for understanding the broader context of AI-Driven Software Engineering.
                                     </p>
                                 </div>
                             </div>
@@ -680,7 +757,61 @@
             );
         };
 
-        // Component: Learning Pathways Modal
+        // NEW COMPONENT: Poster Modal
+        const PosterModal = ({ module, onClose }) => {
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                return () => {
+                    document.body.style.overflow = 'unset';
+                };
+            }, []);
+
+            return ReactDOM.createPortal(
+                <div className="relative z-[9999]">
+                    <div 
+                        className="fixed inset-0 bg-black/90 backdrop-blur-md transition-opacity"
+                        onClick={onClose}
+                    ></div>
+                    <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center p-4 text-center">
+                            <div className="relative w-full max-w-[95vw] lg:max-w-6xl bg-slate-900 border border-cyan-500/30 rounded-2xl shadow-[0_0_100px_rgba(6,182,212,0.2)] overflow-hidden animate-fade-in-up flex flex-col">
+                                
+                                <div className="flex justify-between items-center p-6 border-b border-slate-800/50 bg-slate-900 sticky top-0 z-10">
+                                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                        <LucideIcon name="FileImage" className="text-cyan-400" />
+                                        {module.title}
+                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                         <a href={module.fullImage} target="_blank" className="text-slate-400 hover:text-cyan-400 transition-colors p-2 hover:bg-white/5 rounded-full" title="Open Original">
+                                            <LucideIcon name="ExternalLink" size={24} />
+                                        </a>
+                                        <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+                                            <LucideIcon name="X" size={24} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex-1 overflow-auto bg-slate-950 p-4 flex justify-center items-center min-h-[50vh]">
+                                    <img 
+                                        src={module.fullImage} 
+                                        alt={module.title} 
+                                        className="max-w-full h-auto rounded-lg shadow-2xl"
+                                    />
+                                </div>
+                                <div className="p-4 bg-slate-900 text-left border-t border-slate-800/50">
+                                     <p className="text-slate-400 text-sm">
+                                        <strong>Resource:</strong> High-resolution reference poster. Use the external link button to view full size or download.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            );
+        };
+
+        // Component: Learning Pathways Modal (Unchanged)
         const LearningPathwaysModal = ({ onClose, onPlayModule }) => {
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
@@ -697,6 +828,8 @@
                     modules: [
                         { name: "How AI Chatbots Really Work", moduleId: 1, desc: "Demystifying the process from data ingestion to user screen." },
                         { name: "Understanding RAG", moduleId: 2, desc: "The essential bridge connecting pre-trained knowledge to private data." },
+                        { name: "RAG vs FineTuning", moduleId: 17, desc: "Comparing architectural strategies for knowledge injection." },
+                        { name: "Fine Tuning Enterprise LLMs", moduleId: 18, desc: "Deep dive into customization and model adaptation." },
                         { name: "The Context Revolution: From Prompt to Context", moduleId: 14, desc: "Moving beyond prompt refinement to sophisticated context engineering." }
                     ]
                 },
@@ -717,6 +850,7 @@
                     description: "Transition from practitioner to architect. Master sophisticated meta-strategies for self-correction, memory, and interoperability.",
                     modules: [
                         { name: "Mental Models of Prompters", moduleId: 11, desc: "Using Metaprompting and Reasoning Scaffolds." },
+                        { name: "Agentic AI: Secret Blueprints", moduleId: 16, desc: "Design patterns for autonomous agents and complex workflows." },
                         { name: "Model Context Protocol (MCP)", moduleId: 8, desc: "The 'USB-C for AI': Standardized Tools, Resources, and Prompts." },
                         { name: "AI Agent Skills", moduleId: 4, desc: "Capturing institutional knowledge and automating complex tasks." }
                     ]
@@ -727,6 +861,7 @@
                     description: "The strategic capstone. Elevate focus from single AI systems to architecting entire AI-native organizations.",
                     modules: [
                         { name: "The AI-Native Mindset", moduleId: 15, desc: "Understanding the shift to AI-Native engineering." },
+                        { name: "AI & The Software Engineer", moduleId: 19, desc: "The evolving role of engineers in an AI-first world." },
                         { name: "Solving the AI Productivity Puzzle", moduleId: 5, desc: "Overcoming the 'Stage 2 Bottleneck' to unlock true gains." },
                         { name: "Building with AI: Vibe to Spec", moduleId: 3, desc: "Structured Spec-Driven Development vs. chaotic 'vibe coding'." },
                         { name: "A Developer's Guide to Cursor AI", moduleId: 6, desc: "Redefining the developer's role to 'Expert Conductor'." },
@@ -839,7 +974,7 @@
             );
         };
 
-        // Component: Infographic Modal
+        // Component: Infographic Modal (Unchanged)
         const InfographicModal = ({ onClose }) => {
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
@@ -1077,11 +1212,14 @@
                     <main className="container mx-auto px-6 pb-16 relative z-10">
                         <div className="flex items-center gap-4 mb-8 border-b border-slate-800/50 pb-4">
                             <h2 className="text-2xl font-bold text-white">Course Modules</h2>
-                            <span className="px-3 py-1 bg-cyan-950/30 border border-cyan-500/20 rounded-full text-cyan-400 text-xs font-mono">15 VIDEOS</span>
+                            <span className="px-3 py-1 bg-cyan-950/30 border border-cyan-500/20 rounded-full text-cyan-400 text-xs font-mono">
+                                {courseModules.length} RESOURCES
+                            </span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {courseModules.map((module) => {
+                                const isPoster = module.type === 'poster';
                                 return (
                                     <div 
                                         key={module.id}
@@ -1091,11 +1229,13 @@
                                         {/* Header: Number & Pathway */}
                                         <div className="flex justify-between items-center mb-3">
                                             <span className="font-mono text-cyan-400 text-xs font-bold bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">
-                                                MODULE {module.id.toString().padStart(2, '0')}
+                                                {isPoster ? 'RESOURCE' : `MODULE ${module.id.toString().padStart(2, '0')}`}
                                             </span>
-                                            <span className="text-[10px] font-bold tracking-wider text-slate-500 group-hover:text-cyan-300 transition-colors uppercase">
-                                                Pathway {module.pathwayId}
-                                            </span>
+                                            {module.pathwayId && (
+                                                <span className="text-[10px] font-bold tracking-wider text-slate-500 group-hover:text-cyan-300 transition-colors uppercase">
+                                                    Pathway {module.pathwayId}
+                                                </span>
+                                            )}
                                         </div>
 
                                         {/* Title - Reduced bottom margin */}
@@ -1121,10 +1261,10 @@
                                                 </div>
                                             )}
                                             
-                                            {/* Centered Play Button Overlay */}
+                                            {/* Centered Play/View Button Overlay */}
                                             <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
                                                 <div className="w-12 h-12 rounded-full bg-slate-900/80 backdrop-blur-sm border border-cyan-500/50 flex items-center justify-center text-cyan-400 shadow-lg group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300">
-                                                    <LucideIcon name="Play" size={20} className="ml-1" />
+                                                    <LucideIcon name={isPoster ? "Maximize" : "Play"} size={20} className={isPoster ? "" : "ml-1"} />
                                                 </div>
                                             </div>
                                         </div>
@@ -1136,10 +1276,10 @@
                                                 {module.category}
                                             </span>
                                             
-                                            {/* Clarified Duration - Added 'mins' back for clarity */}
+                                            {/* Clarified Duration */}
                                             <span className="text-slate-500 text-xs font-mono flex items-center gap-1">
-                                                <LucideIcon name="Clock" size={12} />
-                                                {module.duration} mins
+                                                <LucideIcon name={isPoster ? "FileImage" : "Clock"} size={12} />
+                                                {isPoster ? "POSTER" : `${module.duration} mins`}
                                             </span>
                                         </div>
                                     </div>
@@ -1164,8 +1304,16 @@
                             <p className="text-slate-600 text-xs">© 2025 Talent Pool AI Consultancy. All rights reserved.</p>
                         </div>
                     </footer>
+                    
+                    {/* MODAL RENDER LOGIC */}
+                    {selectedModule && (
+                        selectedModule.type === 'poster' ? (
+                            <PosterModal module={selectedModule} onClose={() => setSelectedModule(null)} />
+                        ) : (
+                            <VideoModal module={selectedModule} onClose={() => setSelectedModule(null)} />
+                        )
+                    )}
 
-                    {selectedModule && <VideoModal module={selectedModule} onClose={() => setSelectedModule(null)} />}
                     {showPathways && <LearningPathwaysModal onClose={() => setShowPathways(false)} onPlayModule={handlePlayModuleFromPathways} />}
                     {showInfographic && <InfographicModal onClose={() => setShowInfographic(false)} />}
                     {renderInfoModal()}
