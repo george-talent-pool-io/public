@@ -105,7 +105,7 @@ This high churn rate suggests a shift in developer behavior toward a "trial and 
 Furthermore, the research indicates a concerning rise in code duplication, with some estimates suggesting a **4x increase**.[^7] AI models, which are statistical pattern matchers, often default to repeating known logic rather than identifying opportunities for modular abstraction. This tendency promotes "Copy/Paste" development over "Refactor/Reuse" development. In the short term, this is faster; in the long term, it creates a sprawling, repetitive codebase where bug fixes must be applied in multiple locations, significantly increasing the maintenance burden and the likelihood of regression bugs.
 
 | Metric | Trend (2023–2025) | Underlying Cause & Implication |
-|--------|-------------------|--------------------------------|
+|:-------|:-------------------|:-------------------------------|
 | **Code Churn** | Significant Increase | Shift from "Plan-then-Code" to "Generate-then-Fix." High volatility reduces system stability.[^5] |
 | **Code Duplication** | Up ~4x | AI bias toward localized pattern completion rather than global abstraction leads to bloated codebases.[^7] |
 | **Pull Request Size** | +154% | Larger diffs are generated effortlessly, overwhelming reviewers and encouraging superficial reviews.[^1] |
