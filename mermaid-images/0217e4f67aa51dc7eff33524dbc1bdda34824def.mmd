@@ -1,0 +1,14 @@
+flowchart LR
+    Draft["Draft Solution"] --> Critique["Self-Critique"]
+    Critique --> Tests["Test Generation"]
+    Tests --> Execute["Execute & Observe"]
+    Execute --> Decision{"Tests Pass?"}
+    Decision -->|No| Reflect["Reflect on Failure"]
+    Reflect --> Draft
+    Decision -->|Yes| Final["Ship / Refactor"]
+    Final --> Draft
+    style Draft fill:#cfe4ff,stroke:#1d4ed8,stroke-width:2px
+    style Critique fill:#fde68a,stroke:#c05621,stroke-width:2px
+    style Tests fill:#e9d5ff,stroke:#7c2d12,stroke-width:2px
+    style Execute fill:#fbcfe8,stroke:#be185d,stroke-width:2px
+    style Final fill:#bbf7d0,stroke:#15803d,stroke-width:2px

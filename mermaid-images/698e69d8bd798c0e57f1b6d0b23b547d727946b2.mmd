@@ -1,0 +1,9 @@
+flowchart LR
+    Brain["Brain<br/>(LLM Planner)"] --> Memory["Memory<br/>(Context / GraphRAG)"]
+    Memory --> Tools["Tools<br/>(ACI, Shell, Editors)"]
+    Tools --> Observations["Observations<br/>(Logs, Tests)"]
+    Observations --> Brain
+    style Brain fill:#d6e4ff,stroke:#1a4fd7,stroke-width:2px
+    style Memory fill:#e2f7f2,stroke:#0f766e,stroke-width:2px
+    style Tools fill:#ffe8cc,stroke:#c25e00,stroke-width:2px
+    style Observations fill:#fdf2ff,stroke:#9333ea,stroke-width:2px

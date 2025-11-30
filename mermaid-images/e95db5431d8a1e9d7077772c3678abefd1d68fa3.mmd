@@ -1,0 +1,11 @@
+flowchart TD
+    Start([AI-Generated PR]) --> Choice{"Reviewer<br/>Decision"}
+    Choice -->|Deep Review| Thorough["Deep Review<br/>Quality Gate"]
+    Thorough --> Outcome1["Velocity ↓<br/>Quality ↑"]
+    Outcome1 --> Action1["Invest in Tooling / Staffing"]
+    Choice -->|Rubber Stamp| Rubber["Rubber Stamp<br/>(LGTM)"]
+    Rubber --> Outcome2["Velocity ↑<br/>Risk ↑"]
+    Outcome2 --> Action2["Hidden Bugs & Debt"]
+    style Choice fill:#d6eaff,stroke:#004b8d,stroke-width:2px
+    style Outcome1 fill:#b1f1c9,stroke:#1a7f4b,stroke-width:2px
+    style Outcome2 fill:#ffd6d6,stroke:#a11,stroke-width:2px

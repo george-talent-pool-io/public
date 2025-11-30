@@ -1,0 +1,12 @@
+flowchart LR
+    A["SCIP / LSIF Ingestion"] --> B["Graph Construction<br/>(Neo4j / FalkorDB)"]
+    B --> C["Traversal Query<br/>(Dependency Subgraph)"]
+    C --> D["Context Assembly"]
+    D --> E["LLM Execution"]
+    E --> F["Verification & Feedback"]
+    F -->|Updates| B
+    style A fill:#f3d5ff,stroke:#5a189a,stroke-width:2px
+    style B fill:#d0f4ea,stroke:#0b6e4f,stroke-width:2px
+    style C fill:#ffe0ac,stroke:#b97309,stroke-width:2px
+    style D fill:#cfe4ff,stroke:#1d4ed8,stroke-width:2px
+    style E fill:#ffd6e8,stroke:#b4235f,stroke-width:2px

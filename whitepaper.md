@@ -22,6 +22,20 @@ In practical terms, this creates three strategic imperatives for technology lead
 
 The introduction of Generative AI into the software development workflow was initially met with an expectation of linear productivity gains. The logic appeared sound: if AI can reduce the time required to write code by 50%, then the overall velocity of feature delivery should increase proportionally. However, data collected throughout 2024 and early 2025 paints a far more complex and troubling picture. Organizations are discovering that while the “typing” phase of development has been accelerated, the “thinking,” “reviewing,” and “stabilizing” phases have become significantly more burdened.
 
+<div align="center">
+
+<figure>
+
+<img src="assets/figures/productivity_paradox.png" style="width:70.0%" alt="AI productivity paradox" />
+<figcaption aria-hidden="true">
+
+AI productivity paradox
+</figcaption>
+
+</figure>
+
+</div>
+
 ### 1.1 The Illusion of Throughput
 
 The most immediate and visible impact of AI adoption has been a dramatic increase in the volume of code produced. Research from Faros AI and other industry analysts indicates that developers on teams with high AI adoption complete approximately **21% more tasks** and merge nearly **98% more pull requests (PRs)** than their non-AI-augmented counterparts.([Faros AI 2025a](#ref-faros-dora-2025)) Superficially, these metrics suggest a massive success; the “factory floor” of software engineering is producing output at record speeds.

@@ -10,9 +10,8 @@ LATEXMK := $(shell which latexmk 2>/dev/null)
 PDF_ENGINE := $(if $(LATEXMK),latexmk,xelatex)
 PDF_ENGINE_OPTS := $(if $(LATEXMK),--pdf-engine-opt=-xelatex --pdf-engine-opt=-quiet,)
 
-# Source files
-SOURCE_MD ?= whitepaper.source.md
-VIEW_MD ?= whitepaper.md
+# Source Markdown
+SOURCE_MD ?= whitepaper.md
 
 # Template selection (default: none, uses Pandoc default)
 TEMPLATE ?= 
@@ -75,13 +74,16 @@ pdf-tech-report:
 pdf-default:
 	$(MAKE) pdf TEMPLATE=
 
+# Refresh Markdown with citations rendered
 md:
-	@echo "Rendering $(VIEW_MD) for Markdown viewers..."
-	@pandoc $(SOURCE_MD) \
-	  --citeproc \
-	  -t gfm \
-	  --wrap=none \
-	  -o $(VIEW_MD)
+	@echo "Refreshing whitepaper.md with citeproc for Markdown viewing..."
+	@tmp=$$(mktemp whitepaper.XXXXXX.md); \
+		if pandoc whitepaper.md --citeproc -t gfm --wrap=none -o $$tmp; then \
+			mv $$tmp whitepaper.md; \
+		else \
+			rm -f $$tmp; \
+			exit 1; \
+		fi
 
 # Test all templates (iterate over every .tex in templates/)
 test-all-templates: download-templates

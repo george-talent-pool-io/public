@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser AI Demo — Zero Server Costs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <span class="logo-text">BrowserAI</span>
+            </div>
+            <div class="privacy-badge">
+                <span class="badge-dot"></span>
+                <span>100% Private — Your data never leaves this device</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Status Panel -->
+            <div class="status-panel" id="status-panel">
+                <div class="status-content">
+                    <div class="status-icon" id="status-icon">
+                        <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" stroke-dasharray="62.83" stroke-dashoffset="15"/>
+                        </svg>
+                    </div>
+                    <div class="status-text">
+                        <h2 id="status-title">Initializing...</h2>
+                        <p id="status-message">Checking WebGPU support</p>
+                    </div>
+                </div>
+                <div class="progress-container" id="progress-container" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+                <div class="hardware-info" id="hardware-info"></div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="chat-container" id="chat-container" style="display: none;">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="welcome-message">
+                        <div class="welcome-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </div>
+                        <h3>AI Running Locally in Your Browser</h3>
+                        <p>This model runs 100% on your device. No API calls, no server costs, complete privacy.</p>
+                        
+                        <div class="model-tips">
+                            <div class="tip-header">🚀 SmolLM2-360M — Fast & reliable</div>
+                            <ul class="tip-list">
+                                <li><strong>Simple Q&A:</strong> "What is Python?"</li>
+                                <li><strong>Short code:</strong> "Write hello world in JavaScript"</li>
+                                <li><strong>Lists:</strong> "List 3 programming languages"</li>
+                                <li><strong>Definitions:</strong> "Define machine learning"</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-prompts">
+                            <button class="example-btn" data-prompt="What is Python?">What is Python?</button>
+                            <button class="example-btn" data-prompt="Write hello world in JavaScript">Hello World JS</button>
+                            <button class="example-btn" data-prompt="List 3 benefits of exercise">Exercise benefits</button>
+                            <button class="example-btn" data-prompt="What is an API?">What is an API?</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="prompt-input" 
+                            placeholder="Ask me anything... (Shift+Enter for new line)"
+                            rows="1"
+                        ></textarea>
+                        <button id="send-btn" class="send-btn" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-info">
+                        <span id="token-info">Ready</span>
+                        <span class="separator">•</span>
+                        <span id="backend-info">WebGPU</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with <a href="https://huggingface.co/docs/transformers.js" target="_blank">transformers.js</a> • Model: <span id="model-name">Loading...</span></p>
+            <p class="footer-note">First load downloads ~360MB model (cached for future visits)</p>
+        </footer>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "@huggingface/transformers": "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2"
+        }
+    }
+    </script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+

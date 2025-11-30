@@ -1,0 +1,10 @@
+flowchart LR
+    A["Spec (Gherkin)"] -->|Generates| B["Failing Test Suite"]
+    B -->|Validates| C["AI Agent Implementation"]
+    C -->|Iterates until Pass| B
+    C -->|Refactors| D["Optimized Code"]
+    D -->|Validates| B
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#ff9999,stroke:#333,stroke-width:2px
+    style C fill:#99ccff,stroke:#333,stroke-width:2px
+    style D fill:#99ff99,stroke:#333,stroke-width:2px
