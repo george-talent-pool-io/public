@@ -31,8 +31,8 @@ $endif$
 \setstretch{1.18}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
-\setlength{\headheight}{16pt}
-\setlength{\headsep}{0.3in}
+\setlength{\headheight}{28pt}
+\setlength{\headsep}{0.45in}
 \titleformat{\section}
  {\normalfont\Large\bfseries\color{trPrimary}}
  {\fcolorbox{trAccent}{trAccent!15}{\color{trAccent}\thesection}}{0.75em}{}
@@ -46,8 +46,9 @@ $endif$
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\color{trSubtle}\small $title$}
-\fancyhead[R]{\color{trSubtle}\small \leftmark}
+\fancyhead[L]{\color{trPrimary}\small $title$}
+\fancyhead[C]{}
+\fancyhead[R]{\color{trSubtle}\small $date$}
 \fancyfoot[L]{\color{trSubtle}\small $author$}
 \fancyfoot[R]{\color{trSubtle}\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}

@@ -73,6 +73,28 @@ Furthermore, the research indicates a concerning rise in code duplication, with 
 | **Review Time** | +91% | The cognitive load of verifying machine-generated code is higher than human-written code due to lack of intent visibility.[@faros-dora-2025] |
 | **Bug Rate** | +9% | The "velocity at all costs" mindset, combined with larger/complex PRs, allows more defects to slip through.[@faros-dora-2025] |
 
+<div align="center">
+<div align="center">
+
+```mermaid
+flowchart LR
+    A["AI Code Generation ↑"] --> B["Pull Request Volume ↑"]
+    B --> C["Reviewer Load ↑"]
+    C --> D["Delivery Velocity ↓"]
+    C --> E["Bug Rate ↑"]
+    B --> F["Churn & Duplication ↑"]
+    F --> D
+    style A fill:#ffd447,stroke:#333,stroke-width:2px
+    style B fill:#fff3b0,stroke:#333,stroke-width:1.5px
+    style C fill:#c0d9ff,stroke:#333,stroke-width:1.5px
+    style D fill:#ffb3b3,stroke:#333,stroke-width:2px
+    style E fill:#ffa07a,stroke:#333,stroke-width:2px
+    style F fill:#ffe0a3,stroke:#333,stroke-width:1.5px
+```
+
+</div>
+</div>
+
 ### 1.3 The "Reviewer's Dilemma" and Cognitive Load
 
 The most critical friction point identified in the AI-native workflow is the **Code Review process**. In a traditional workflow, there is a rough symmetry between the effort required to write code and the effort required to review it. The reviewer can generally assume that the author has spent time thinking through the logic, naming, and structure. With AI-generated code, this symmetry is broken. An AI agent can generate 500 lines of syntactically correct code in seconds, but it takes a human expert significantly longer to verify that code than if they had written it themselves.[@gitclear-review-strategies]
@@ -83,6 +105,26 @@ Consequently, review times have ballooned by **91%** in AI-heavy teams.[@faros-d
 
 1. **Review Thoroughly**: They become the bottleneck, slowing down the entire team's throughput while they spend their days debugging and validating AI-generated logic.
 2. **Rubber Stamp ("LGTM")**: They succumb to the pressure of velocity and approve PRs with superficial checks. This maintains the illusion of speed but allows bug rates to climb (up 9% in AI-heavy teams) and invisible technical debt to accumulate.
+
+<div align="center">
+<div align="center">
+
+```mermaid
+flowchart TD
+    Start([AI-Generated PR]) --> Choice{"Reviewer<br/>Decision"}
+    Choice -->|Deep Review| Thorough["Deep Review<br/>Quality Gate"]
+    Thorough --> Outcome1["Velocity ↓<br/>Quality ↑"]
+    Outcome1 --> Action1["Invest in Tooling / Staffing"]
+    Choice -->|Rubber Stamp| Rubber["Rubber Stamp<br/>(LGTM)"]
+    Rubber --> Outcome2["Velocity ↑<br/>Risk ↑"]
+    Outcome2 --> Action2["Hidden Bugs & Debt"]
+    style Choice fill:#d6eaff,stroke:#004b8d,stroke-width:2px
+    style Outcome1 fill:#b1f1c9,stroke:#1a7f4b,stroke-width:2px
+    style Outcome2 fill:#ffd6d6,stroke:#a11,stroke-width:2px
+```
+
+</div>
+</div>
 
 The **"Eyeball Time"** metric—the total amount of time reviewers spend looking at a diff—has become a crucial guardrail metric. A decrease in eyeball time per line of code, concurrent with an increase in PR volume, is a leading indicator of quality collapse.[@meta-code-review] The paradox, therefore, is that AI has solved the problem of "empty page syndrome" but has created a new problem of "flood management."
 
@@ -109,6 +151,29 @@ This new role demands a shift in focus:
 - **From Logic Construction to Constraint Definition**: The engineer's primary job is to define the boundaries (security policies, performance budgets, compliance requirements, interface contracts) within which the AI agent is permitted to operate.[@redhat-spec-driven]
 - **From Authorship to Verification**: Engineers must develop the forensic skills to spot subtle "hallucinations" in AI logic—logic that looks plausible but is factually incorrect or insecure. This requires a deeper understanding of fundamentals than ever before, as the "trust but verify" model replaces the "write and test" model.[@graphite-review-ai-code]
 - **From Prompt Engineering to Context Engineering**: While "prompt engineering" (crafting the perfect text query) is a transient skill likely to be abstracted away, **Context Engineering**—the architecture of information flow to the model—is a durable engineering discipline. It involves designing the systems that retrieve and present the right information (code snippets, docs, database schemas) to the AI at the right time.[@youtube-context-beats]
+
+<div align="center">
+<div align="center">
+
+```mermaid
+mindmap
+  root((AI Architect))
+    Constraint Definition
+      Security Policies
+      Performance Budgets
+      Compliance Interfaces
+    Verification
+      Hallucination Detection
+      Forensic Debugging
+      Code Audits
+    Context Engineering
+      Knowledge Graphs
+      Retrieval Guards
+      Prompt Contracts
+```
+
+</div>
+</div>
 
 ### 2.3 Skills Matrix Evolution (2024 vs. 2025)
 
@@ -180,6 +245,7 @@ In advanced SDD workflows, the "Spec" generates the tests first. The workflow be
 3. **Code**: AI Agent writes code until the test suite passes.
 4. **Refactor**: AI Agent optimizes the code while keeping tests green.
 
+<div align="center">
 ```mermaid
 flowchart LR
     A["Spec (Gherkin)"] -->|Generates| B["Failing Test Suite"]
@@ -192,6 +258,7 @@ flowchart LR
     style C fill:#99ccff,stroke:#333,stroke-width:2px
     style D fill:#99ff99,stroke:#333,stroke-width:2px
 ```
+</div>
 
 This approach ensures that the code actually meets the requirements, rather than just "looking correct." It changes the "Definition of Done" from "Code is merged" to **"Spec is satisfied by passing BDD tests."**[@andremoniy-bdd]
 
@@ -233,6 +300,27 @@ The state-of-the-art implementation of this concept in 2025 is **GraphRAG**. Thi
 3. **Retrieval Strategy**: When a query is received, the system performs a graph traversal (e.g., finding the "community" of related nodes) rather than a simple similarity search.
 4. **Context Assembly**: The relevant nodes and edges are serialized back into code snippets and fed into the LLM.
 
+<div align="center">
+<div align="center">
+
+```mermaid
+flowchart LR
+    A["SCIP / LSIF Ingestion"] --> B["Graph Construction<br/>(Neo4j / FalkorDB)"]
+    B --> C["Traversal Query<br/>(Dependency Subgraph)"]
+    C --> D["Context Assembly"]
+    D --> E["LLM Execution"]
+    E --> F["Verification & Feedback"]
+    F -->|Updates| B
+    style A fill:#f3d5ff,stroke:#5a189a,stroke-width:2px
+    style B fill:#d0f4ea,stroke:#0b6e4f,stroke-width:2px
+    style C fill:#ffe0ac,stroke:#b97309,stroke-width:2px
+    style D fill:#cfe4ff,stroke:#1d4ed8,stroke-width:2px
+    style E fill:#ffd6e8,stroke:#b4235f,stroke-width:2px
+```
+
+</div>
+</div>
+
 This approach solves the **"Context Poisoning"** problem—where irrelevant code confuses the model—by ensuring that only structurally relevant information is included. It grounds the probabilistic generation in the deterministic reality of the compiler's view of the world.[@neo4j-rag-tutorial]
 
 ### 4.4 Managing Long-Horizon Tasks
@@ -251,6 +339,24 @@ The progression from "Copilots" (smart autocomplete) to "Agents" (autonomous pro
 ### 5.1 The Agent Architecture
 
 A robust software engineering agent is not a single model but a system composed of three main components: **The Brain (LLM)**, **the Memory (Context/RAG)**, and **the Tools (ACI – Agent-Computer Interface)**.[@arxiv-swe-agent]
+
+<div align="center">
+<div align="center">
+
+```mermaid
+flowchart LR
+    Brain["Brain<br/>(LLM Planner)"] --> Memory["Memory<br/>(Context / GraphRAG)"]
+    Memory --> Tools["Tools<br/>(ACI, Shell, Editors)"]
+    Tools --> Observations["Observations<br/>(Logs, Tests)"]
+    Observations --> Brain
+    style Brain fill:#d6e4ff,stroke:#1a4fd7,stroke-width:2px
+    style Memory fill:#e2f7f2,stroke:#0f766e,stroke-width:2px
+    style Tools fill:#ffe8cc,stroke:#c25e00,stroke-width:2px
+    style Observations fill:#fdf2ff,stroke:#9333ea,stroke-width:2px
+```
+
+</div>
+</div>
 
 #### The Agent-Computer Interface (ACI)
 
@@ -275,6 +381,29 @@ The key differentiator between a "dumb" agent and a "smart" agent is **Reflectio
 5. **Iterate**: If the test fails, the agent analyzes the error message, "reflects" on why its previous attempt failed, and generates a new attempt.
 
 This self-healing loop allows agents to solve problems that require reasoning and adaptation, whereas standard autocomplete only solves problems of recall.
+
+<div align="center">
+<div align="center">
+
+```mermaid
+flowchart LR
+    Draft["Draft Solution"] --> Critique["Self-Critique"]
+    Critique --> Tests["Test Generation"]
+    Tests --> Execute["Execute & Observe"]
+    Execute --> Decision{"Tests Pass?"}
+    Decision -->|No| Reflect["Reflect on Failure"]
+    Reflect --> Draft
+    Decision -->|Yes| Final["Ship / Refactor"]
+    Final --> Draft
+    style Draft fill:#cfe4ff,stroke:#1d4ed8,stroke-width:2px
+    style Critique fill:#fde68a,stroke:#c05621,stroke-width:2px
+    style Tests fill:#e9d5ff,stroke:#7c2d12,stroke-width:2px
+    style Execute fill:#fbcfe8,stroke:#be185d,stroke-width:2px
+    style Final fill:#bbf7d0,stroke:#15803d,stroke-width:2px
+```
+
+</div>
+</div>
 
 ### 5.3 Failure Modes and Security (XPIA)
 
@@ -325,6 +454,21 @@ Based on the Whitesmith model and various industry frameworks, organizations typ
 - **Focus**: Reimagining the product and organization for AI.
 - **Activities**: The architecture itself is designed for agents (smaller, more modular interfaces). The "Developer" role formally shifts to "System Orchestrator."
 - **Key Metric**: Value delivery velocity and Innovation rate (time from idea to prototype).
+
+<div align="center">
+<div align="center">
+
+```mermaid
+timeline
+    title AI Engineering Maturity Journey
+    2025 Q1 : Phase 1 – Enablement : Copilots, Usage Policy, Adoption %
+    2025 Q2 : Phase 2 – Contextualization : RAG / GraphRAG, Repo Context, Acceptance Rate
+    2025 Q3 : Phase 3 – Autonomy : Workflow Agents, SDD Pilots, Eyeball Time
+    2026+   : Phase 4 – AI-Native : Agent-Centric Architecture, Orchestrator Roles, Value Velocity
+```
+
+</div>
+</div>
 
 ### 6.2 Implementation Roadmap for Enterprise
 

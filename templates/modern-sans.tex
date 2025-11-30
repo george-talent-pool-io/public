@@ -38,17 +38,19 @@ $endif$
 \titlespacing*{\subsection}{0pt}{2.2ex plus 0.5ex}{0.8ex}
 \setlength{\parskip}{0.9em}
 \setlength{\parindent}{0pt}
-\setlength{\headheight}{16pt}
-\setlength{\headsep}{0.3in}
+\setlength{\headheight}{28pt}
+\setlength{\headsep}{0.45in}
 \setlist[itemize]{label=\textbullet,leftmargin=1.4em,itemsep=0.4em}
 \setlist[enumerate]{leftmargin=1.6em,itemsep=0.3em}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\color{msPrimary}\small $title$}
-\fancyhead[R]{\color{msSubtle}\small \leftmark}
+\fancyhead[C]{}
+\fancyhead[R]{\color{msSubtle}\small $date$}
 \fancyfoot[R]{\color{msSubtle}\small\thepage}
-\fancyfoot[L]{\color{msSubtle}\small $date$}
-\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{msAccent}\leaders\hrule height \headrulewidth\hfill}}
 \renewcommand{\footrulewidth}{0.4pt}
 \renewcommand{\footrule}{\hbox to\headwidth{\color{msAccent}\leaders\hrule height \footrulewidth\hfill}}
 $if(geometry)$
