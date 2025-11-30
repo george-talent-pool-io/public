@@ -12,13 +12,19 @@ import { pipeline, env } from '@huggingface/transformers';
 // ============================================================================
 
 const CONFIG = {
-    // Model - SmolLM2 is well-tested with transformers.js
-    model: 'HuggingFaceTB/SmolLM2-360M-Instruct',
+    // Default model - 135M is fastest for quick demo
+    model: 'HuggingFaceTB/SmolLM2-135M-Instruct',
     
     // Generation settings - keep it simple
     maxNewTokens: 150,
     temperature: 0.5,
     doSample: true,
+};
+
+// Available models (pre-tested to work in browser)
+const AVAILABLE_MODELS = {
+    'HuggingFaceTB/SmolLM2-135M-Instruct': { name: 'SmolLM2-135M', size: '~135MB', quality: 'Fast' },
+    'HuggingFaceTB/SmolLM2-360M-Instruct': { name: 'SmolLM2-360M', size: '~360MB', quality: 'Best' },
 };
 
 // Configure environment
@@ -44,7 +50,8 @@ const elements = {
     sendBtn: document.getElementById('send-btn'),
     tokenInfo: document.getElementById('token-info'),
     backendInfo: document.getElementById('backend-info'),
-    modelName: document.getElementById('model-name'),
+    modelSelect: document.getElementById('model-select'),
+    modelSelector: document.querySelector('.model-selector'),
 };
 
 // ============================================================================
@@ -194,7 +201,14 @@ async function checkWebGPU() {
 // Model Loading
 // ============================================================================
 
-async function loadModel() {
+async function loadModel(modelId = null) {
+    const modelToLoad = modelId || CONFIG.model;
+    
+    // Disable UI during loading
+    elements.modelSelect.disabled = true;
+    elements.sendBtn.disabled = true;
+    elements.modelSelector.classList.add('loading');
+    
     const webgpuCheck = await checkWebGPU();
     
     // Force WASM for now - WebGPU has issues with some models
@@ -218,16 +232,14 @@ async function loadModel() {
     updateProgress(0, 'Starting...');
     
     try {
-        // Track download progress - simplified for accuracy
+        // Track download progress
         const progressCallback = (progress) => {
-            console.log('Progress:', progress); // Debug
+            console.log('Progress:', progress);
             
             if (progress.status === 'progress' && progress.progress !== undefined) {
-                // Use the progress percentage directly from the event
                 const fileName = progress.file?.split('/').pop() || 'model';
                 const percent = progress.progress;
                 
-                // Show loaded/total if available
                 let details = `${Math.round(percent)}%`;
                 if (progress.loaded && progress.total) {
                     details = `${formatBytes(progress.loaded)} / ${formatBytes(progress.total)}`;
@@ -248,49 +260,57 @@ async function loadModel() {
         };
         
         // Create the text generation pipeline
-        // Use q8 (8-bit quantization) - compatible and reasonably small
-        generator = await pipeline('text-generation', CONFIG.model, {
-            dtype: 'q8',  // 8-bit quantization - good balance of size/compatibility
+        generator = await pipeline('text-generation', modelToLoad, {
+            dtype: 'q8',
             device: deviceType,
             progress_callback: progressCallback,
         });
         
-        elements.modelName.textContent = CONFIG.model.split('/').pop();
+        // Update current model in config
+        CONFIG.model = modelToLoad;
+        
+        // Enable UI
+        elements.modelSelect.disabled = false;
+        elements.sendBtn.disabled = false;
+        elements.modelSelector.classList.remove('loading');
         
         return true;
     } catch (error) {
         console.error('Model loading error:', error);
-        
-        // If WebGPU failed, try falling back to WASM
-        if (deviceType === 'webgpu') {
-            console.log('WebGPU failed, falling back to WASM...');
-            backend = 'wasm';
-            elements.backendInfo.textContent = 'WASM';
-            elements.hardwareInfo.innerHTML = `
-                <strong>⚠️ WebGPU failed:</strong> ${error.message}<br>
-                <strong>Backend:</strong> WASM (CPU fallback)
-            `;
-            
-            try {
-                generator = await pipeline('text-generation', CONFIG.model, {
-                    dtype: 'q8',
-                    device: 'wasm',
-                    progress_callback: (p) => {
-                        if (p.status === 'progress' && p.total) {
-                            updateProgress((p.loaded / p.total) * 100);
-                        }
-                    },
-                });
-                elements.modelName.textContent = CONFIG.model.split('/').pop();
-                return true;
-            } catch (fallbackError) {
-                updateStatus('Error Loading Model', fallbackError.message, 'error');
-                return false;
-            }
-        }
-        
         updateStatus('Error Loading Model', error.message, 'error');
+        
+        // Re-enable selector so user can try a different model
+        elements.modelSelect.disabled = false;
+        elements.modelSelector.classList.remove('loading');
+        
         return false;
+    }
+}
+
+// Switch to a different model
+async function switchModel(newModelId) {
+    if (isGenerating) {
+        alert('Please wait for the current generation to complete.');
+        elements.modelSelect.value = CONFIG.model;
+        return;
+    }
+    
+    // Show status panel for loading
+    elements.statusPanel.style.display = 'block';
+    elements.chatContainer.style.display = 'none';
+    
+    // Clear old generator
+    generator = null;
+    
+    const success = await loadModel(newModelId);
+    
+    if (success) {
+        updateStatus('Ready!', 'Model loaded successfully.', 'ready');
+        setTimeout(() => {
+            elements.statusPanel.style.display = 'none';
+            elements.chatContainer.style.display = 'flex';
+            elements.promptInput.focus();
+        }, 500);
     }
 }
 
@@ -373,7 +393,7 @@ async function generateResponse(prompt) {
         // Calculate stats
         const tokenCount = Math.ceil(responseText.length / 4);
         const tokensPerSec = duration > 0 ? (tokenCount / parseFloat(duration)).toFixed(1) : '0';
-        elements.tokenInfo.textContent = `${duration}s • ~${tokenCount} tokens • ${tokensPerSec} tok/s • ${backend.toUpperCase()}`;
+        elements.tokenInfo.textContent = `${duration}s • ~${tokenCount} tokens • ${tokensPerSec} tok/s`;
         
     } catch (error) {
         console.error('Generation error:', error);
@@ -424,6 +444,14 @@ function setupEventListeners() {
             elements.sendBtn.click();
         });
     });
+    
+    // Model selector
+    elements.modelSelect.addEventListener('change', (e) => {
+        const newModel = e.target.value;
+        if (newModel !== CONFIG.model) {
+            switchModel(newModel);
+        }
+    });
 }
 
 // ============================================================================
@@ -432,6 +460,9 @@ function setupEventListeners() {
 
 async function init() {
     updateStatus('Initializing', 'Checking browser capabilities...');
+    
+    // Set initial model selection
+    elements.modelSelect.value = CONFIG.model;
     
     const success = await loadModel();
     

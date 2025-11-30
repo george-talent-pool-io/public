@@ -23,9 +23,21 @@
                 </div>
                 <span class="logo-text">BrowserAI</span>
             </div>
-            <div class="privacy-badge">
-                <span class="badge-dot"></span>
-                <span>100% Private — Your data never leaves this device</span>
+            <div class="header-right">
+                <div class="model-selector">
+                    <span class="model-selector-dot"></span>
+                    <select id="model-select" disabled>
+                        <option value="HuggingFaceTB/SmolLM2-135M-Instruct">SmolLM2-135M (Fast)</option>
+                        <option value="HuggingFaceTB/SmolLM2-360M-Instruct">SmolLM2-360M (Best)</option>
+                    </select>
+                    <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </div>
+                <div class="privacy-badge">
+                    <span class="badge-dot"></span>
+                    <span>100% Private</span>
+                </div>
             </div>
         </header>
 
@@ -66,7 +78,7 @@
                         <p>This model runs 100% on your device. No API calls, no server costs, complete privacy.</p>
                         
                         <div class="model-tips">
-                            <div class="tip-header">🚀 SmolLM2-360M — Fast & reliable</div>
+                            <div class="tip-header">🚀 Try these prompts:</div>
                             <ul class="tip-list">
                                 <li><strong>Simple Q&A:</strong> "What is Python?"</li>
                                 <li><strong>Short code:</strong> "Write hello world in JavaScript"</li>
@@ -85,23 +97,31 @@
                 </div>
                 
                 <div class="chat-input-container">
-                    <div class="input-wrapper">
-                        <textarea 
-                            id="prompt-input" 
-                            placeholder="Ask me anything... (Shift+Enter for new line)"
-                            rows="1"
-                        ></textarea>
-                        <button id="send-btn" class="send-btn" disabled>
+                    <div class="input-row">
+                        <div class="input-wrapper">
+                            <textarea 
+                                id="prompt-input" 
+                                placeholder="Ask me anything... (Shift+Enter for new line)"
+                                rows="1"
+                            ></textarea>
+                            <button id="send-btn" class="send-btn" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 2L11 13"/>
+                                    <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <a href="/" class="home-btn" title="Back to Home">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 2L11 13"/>
-                                <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
                             </svg>
-                        </button>
+                        </a>
                     </div>
                     <div class="input-info">
                         <span id="token-info">Ready</span>
                         <span class="separator">•</span>
-                        <span id="backend-info">WebGPU</span>
+                        <span id="backend-info">WASM</span>
                     </div>
                 </div>
             </div>
@@ -109,8 +129,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>Built with <a href="https://huggingface.co/docs/transformers.js" target="_blank">transformers.js</a> • Model: <span id="model-name">Loading...</span></p>
-            <p class="footer-note">First load downloads ~360MB model (cached for future visits)</p>
+            <p>Built with <a href="https://huggingface.co/docs/transformers.js" target="_blank">transformers.js</a> • Runs 100% in your browser</p>
         </footer>
     </div>
 
