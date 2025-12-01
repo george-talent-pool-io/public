@@ -2,7 +2,13 @@ build:
 	mkdir -p build
 
 # Find pandoc-mermaid-filter and mmdc
-MERMAID_FILTER := $(shell which pandoc-mermaid-filter 2>/dev/null || find ~/Library/Python -name "pandoc-mermaid" -type f 2>/dev/null | head -1 || echo "pandoc-mermaid-filter")
+# Check both 'pandoc-mermaid-filter' and 'pandoc-mermaid' (actual executable name)
+# Check Linux paths (~/.local/bin) and macOS paths (~/Library/Python)
+MERMAID_FILTER := $(shell which pandoc-mermaid-filter 2>/dev/null || which pandoc-mermaid 2>/dev/null || \
+	find ~/.local/bin -name "pandoc-mermaid*" -type f 2>/dev/null | head -1 || \
+	find ~/Library/Python -name "pandoc-mermaid*" -type f 2>/dev/null | head -1 || \
+	$(shell python3 -m site --user-base 2>/dev/null)/bin/pandoc-mermaid 2>/dev/null || \
+	echo "")
 MERMAID_BIN := $(shell which mmdc 2>/dev/null || which mermaid 2>/dev/null || echo "mmdc")
 
 # Prefer latexmk for multi-pass compilation if available
@@ -23,6 +29,13 @@ OUTPUT ?= build/$(OUTPUT_BASENAME).pdf
 pdf: build
 	@echo "Generating PDF with Mermaid support..."
 	@echo "Using Mermaid binary: $(MERMAID_BIN)"
+	@if [ -z "$(MERMAID_FILTER)" ]; then \
+		echo "ERROR: pandoc-mermaid-filter not found!"; \
+		echo "Run: ./verify-prerequisites.sh to check installation"; \
+		echo "Or install with: pip3 install --user --break-system-packages pandoc-mermaid-filter"; \
+		exit 1; \
+	fi
+	@echo "Using Mermaid filter: $(MERMAID_FILTER)"
 	@if [ -n "$(TEMPLATE)" ]; then \
 		echo "Using template: $(TEMPLATE)"; \
 		MERMAID_BIN=$(MERMAID_BIN) pandoc $(SOURCE_MD) \
