@@ -9,5 +9,9 @@
     
     // Fix service worker errors in webview
     "workbench.enableExperiments": false,
-    "webview.experimental.useIframes": true
+    "webview.experimental.useIframes": true,
+    
+    // AI Commit Message Generator Settings
+    "git.suggestSmartCommit": true,
+    "git.confirmSync": false
 }

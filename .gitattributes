@@ -1,0 +1,22 @@
+# Exclude large generated files from diff analysis
+# This prevents AI commit message generator from analyzing them
+# and avoids "invalid_argument" errors due to token limits
+
+# Package lock files - mark as binary to exclude from diff
+package-lock.json -diff -merge
+*.lock -diff -merge
+
+# Node modules (already in .gitignore, but add here for safety)
+node_modules/** -diff -merge
+
+# Large generated files
+*.min.js -diff -merge
+*.min.css -diff -merge
+
+# Binary files
+*.pdf -diff -merge
+*.png -diff -merge
+*.jpg -diff -merge
+*.jpeg -diff -merge
+*.gif -diff -merge
+
