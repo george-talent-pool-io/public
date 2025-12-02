@@ -1,3 +1,13 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    
+    // File watching settings for Quarto (.qmd) files
+    "files.watcherPolling": true,
+    
+    // Quarto extension settings
+    "quarto.preview.autoRefresh": true,
+    
+    // Fix service worker errors in webview
+    "workbench.enableExperiments": false,
+    "webview.experimental.useIframes": true
 }
