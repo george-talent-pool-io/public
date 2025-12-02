@@ -1,4 +1,6 @@
 node_modules/
+scoping.*
+scoping_files/
 
 quarto-cheatsheet_files/
 quarto-cheatsheet-fixed_files/
