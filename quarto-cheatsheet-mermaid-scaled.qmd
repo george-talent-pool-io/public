@@ -1,0 +1,339 @@
+---
+title: "Quarto One-File Cheatsheet (Scaled Mermaid)"
+author: "George"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+  pdf:
+    toc: true
+  docx: default
+number-sections: true
+execute:
+  echo: true
+  warning: false
+---
+
+# Introduction
+
+This single `.qmd` file demonstrates, **actually rendered**:
+
+- Multiple outputs: **HTML**, **PDF**, **DOCX**
+- All **callout** types (`note`, `tip`, `warning`, `caution`, `important`)
+- A **Mermaid diagram** that is **scaled to page width** in PDF
+- Real **code blocks** (with syntax highlighting)
+- **Math** (inline + display)
+- A **table** with caption
+- **Tabs** (`panel-tabset`)
+- **Columns** layout
+- **Footnotes**
+
+It also includes syntax examples for most features, with fencing arranged so they don’t break rendering.
+
+---
+
+# Callouts (Notes, Tips, Warnings, etc.)
+
+## Syntax
+
+To write a callout:
+
+````markdown
+::: note
+This is a note.
+:::
+````
+
+## Live Examples
+
+### Note
+
+::: note
+This is a **note**.
+
+Use notes for neutral, highlighted information that’s useful but not urgent.
+:::
+
+### Tip
+
+::: tip
+This is a **tip**.
+
+Use tips for *best practices*, shortcuts, or recommended patterns.
+:::
+
+### Warning
+
+::: warning
+This is a **warning**.
+
+Use warnings when something might break, misbehave, or cause confusion.
+:::
+
+### Caution
+
+::: caution
+This is a **caution**.
+
+Use cautions for *dangerous* or *irreversible* operations (e.g., destructive commands, data loss).
+:::
+
+### Important
+
+::: important
+This is an **important** callout.
+
+Use it for critical information that the reader **must not miss**.
+:::
+
+### Custom-Titled Callout
+
+#### Syntax
+
+````markdown
+::: note
+:::{.callout-title}
+Custom Title
+:::
+
+Body text.
+:::
+````
+
+#### Live Example
+
+::: note
+:::{.callout-title}
+Custom Note Title
+:::
+
+This note has a **custom title** instead of the default “Note”.
+:::
+
+---
+
+# Mermaid Diagrams
+
+By default, Quarto renders Mermaid diagrams to PNGs for PDF. If the diagram is too wide, you can control size with `fig-width` (and optionally `fig-height`) cell options.
+
+## Syntax
+
+````markdown
+```{mermaid}
+%%| fig-width: 5
+%%| fig-height: 3
+flowchart LR
+  A --> B
+```
+````
+
+`fig-width` is in inches relative to the LaTeX `\textwidth`.
+
+## Live Example (Scaled)
+
+```{mermaid}
+%%| fig-width: 5
+%%| fig-height: 2.5
+flowchart LR
+  A[Author writes .qmd] --> B[Quarto]
+  B --> C[HTML Output]
+  B --> D[PDF Output]
+  B --> E[DOCX Output]
+  C --> F[Website / Portal]
+  D --> G[Print / Archive]
+  E --> H[Client Review]
+```
+
+If Mermaid does **not** render in HTML, check that your Quarto version supports it.  
+If it fails in **PDF**, install either `chromium` or `mermaid-cli` so Quarto can render the diagram to an image.
+
+---
+
+# Code Blocks
+
+## Syntax
+
+Plain code block:
+
+````markdown
+```python
+def add(a, b):
+    return a + b
+```
+````
+
+## Live Example (Python)
+
+```python
+def add(a, b):
+    return a + b
+
+print(add(2, 3))
+```
+
+You can change `python` to any supported language (e.g. `bash`, `java`, `sql`).
+
+---
+
+# Math (Inline and Display)
+
+## Syntax
+
+Inline math:
+
+````markdown
+The formula is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+````
+
+Display math:
+
+````markdown
+$$
+\int_{0}^{1} x^2 \, dx = \frac{1}{3}.
+$$
+````
+
+## Live Examples
+
+Inline: The quadratic formula is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+Display:
+
+$$
+\int_{0}^{1} x^2 \, dx = \left[ \frac{x^3}{3} \right]_0^1 = \frac{1}{3}.
+$$
+
+---
+
+# Table with Caption
+
+## Syntax
+
+````markdown
+: Example configuration options {#tbl-config}
+
+| Option     | Description                      |
+|-----------|-----------------------------------|
+| `format`  | Output formats (html, pdf, docx)  |
+| `execute` | Code execution controls           |
+````
+
+## Live Example
+
+: Example configuration options {#tbl-config}
+
+| Option     | Description                      |
+|-----------|-----------------------------------|
+| `format`  | Output formats (html, pdf, docx)  |
+| `execute` | Code execution controls           |
+
+---
+
+# Tabs (`panel-tabset`)
+
+## Syntax
+
+````markdown
+::: {.panel-tabset}
+## Tab A
+Content for tab A.
+## Tab B
+Content for tab B.
+:::
+````
+
+## Live Example
+
+::: {.panel-tabset}
+## Authoring
+
+You write in:
+
+- Plain **Markdown** / `.qmd`
+- With optional:
+  - callouts
+  - diagrams
+  - math
+  - code blocks
+
+## Outputs
+
+Quarto renders to:
+
+- **HTML** (web)
+- **PDF** (print)
+- **DOCX** (Word)
+:::
+
+---
+
+# Columns Layout
+
+## Syntax
+
+````markdown
+:::{.columns}
+::: {.column width="50%"}
+Left column.
+:::
+::: {.column width="50%"}
+Right column.
+:::
+:::
+````
+
+## Live Example
+
+:::{.columns}
+::: {.column width="50%"}
+**Left Column**
+
+- Good for side-by-side comparisons  
+- Show prose, lists, or explanations here  
+- Nicely readable even in PDF
+:::
+::: {.column width="50%"}
+**Right Column**
+
+- Show diagrams, code, or tables here  
+- Works well for “before vs after”  
+- Useful in technical reports
+:::
+:::
+
+---
+
+# Footnotes
+
+## Syntax
+
+````markdown
+This is a sentence with a footnote.[^1]
+
+[^1]: Footnote content.
+````
+
+## Live Example
+
+This is a sentence with a footnote.[^1]
+
+[^1]: This is the **footnote content**, appearing at the bottom of the page (PDF) or document (HTML).
+
+---
+
+# Final Checklist
+
+This **single file** shows:
+
+- ✅ YAML header with multi-format output (HTML, PDF, DOCX)  
+- ✅ All core **callout** types:
+  - `note`, `tip`, `warning`, `caution`, `important`
+- ✅ A **Mermaid** diagram whose width is controlled for PDF via `fig-width`
+- ✅ Real **code blocks** with syntax highlighting
+- ✅ Real **math** (inline + display)
+- ✅ A **table** with caption
+- ✅ **Tabs** using `panel-tabset`
+- ✅ **Columns** layout
+- ✅ **Footnotes**
+
+Use this as your **one-file Quarto cheat sheet**, and tweak `fig-width` / `fig-height` on the Mermaid chunk if you want the diagram even smaller or larger on the PDF page.

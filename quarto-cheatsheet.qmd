@@ -1,0 +1,430 @@
+---
+title: "Quarto One-File Cheatsheet"
+author: "George"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+  pdf:
+    toc: true
+  docx: default
+number-sections: true
+execute:
+  echo: true
+  warning: false
+---
+
+# Introduction {#sec-intro}
+
+This single `.qmd` file demonstrates:
+
+- Multiple outputs: **HTML**, **PDF**, **DOCX**
+- All **callout** types (`note`, `tip`, `warning`, `caution`, `important`)
+- **Mermaid** diagrams
+- **Code blocks** (with labels + cross-refs)
+- **Math** (inline + display + labeled equations)
+- **Figures** and **tables** with captions + cross-refs**
+- **Tabs** (`panel-tabset`)
+- **Columns** layout
+- **Footnotes**
+- **Citations** (needs a small `.bib` file if you want it live)
+
+You can use this file as a personal Quarto **cheat sheet**.
+
+---
+
+# Callouts (Notes, Tips, Warnings, etc.) {#sec-callouts}
+
+Syntax pattern:
+
+```md
+::: note
+Note content.
+:::
+```
+
+## Note
+
+::: note
+This is a **note**.
+
+Use notes for neutral, highlighted information that’s useful but not urgent.
+:::
+
+## Tip
+
+::: tip
+This is a **tip**.
+
+Use tips for *best practices*, shortcuts, or recommended patterns.
+:::
+
+## Warning
+
+::: warning
+This is a **warning**.
+
+Use warnings when something might break, misbehave, or cause confusion.
+:::
+
+## Caution
+
+::: caution
+This is a **caution**.
+
+Use cautions for *dangerous* or *irreversible* operations (e.g., destructive commands, data loss).
+:::
+
+## Important
+
+::: important
+This is an **important** callout.
+
+Use it for critical information that the reader **must not miss**.
+:::
+
+## Custom-Titled Callout
+
+You can override the title:
+
+```md
+::: note
+:::{.callout-title}
+Custom Title
+:::
+
+Body text.
+:::
+```
+
+Example:
+
+::: note
+:::{.callout-title}
+Custom Note Title
+:::
+
+This note has a **custom title** instead of the default “Note”.
+:::
+
+---
+
+# Mermaid Diagrams {#sec-mermaid}
+
+Syntax:
+
+```md
+```{mermaid}
+flowchart LR
+  A --> B
+```
+```
+
+Example:
+
+```{mermaid}
+flowchart LR
+  A[Author writes .qmd] --> B[Quarto]
+  B --> C[HTML Output]
+  B --> D[PDF Output]
+  B --> E[DOCX Output]
+  C --> F[Website / Portal]
+  D --> G[Print / Archive]
+  E --> H[Client Review]
+```
+
+---
+
+# Code Blocks and Listings {#sec-code}
+
+## Basic Code Block
+
+```md
+```python
+def add(a, b):
+    return a + b
+```
+```
+
+Example:
+
+```python
+def add(a, b):
+    return a + b
+
+print(add(2, 3))
+```
+
+## Labeled Code Block (Listing) {#sec-code-label}
+
+Label pattern:
+
+```md
+```{.python #lst-add-func}
+def add(a, b):
+    return a + b
+```
+```
+
+Example (labeled):
+
+```{.python #lst-add-func}
+def add(a, b):
+    """Return the sum of a and b."""
+    return a + b
+```
+
+We can now reference listing @lst-add-func from anywhere in the document.
+
+See listing @lst-add-func for the implementation of `add`.
+
+---
+
+# Math (Inline, Display, Labeled) {#sec-math}
+
+## Inline Math
+
+Use `$ ... $`:
+
+- Example: The quadratic formula is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+## Display Math
+
+Use `$$ ... $$`:
+
+$$
+\int_{0}^{1} x^2 \, dx = \left[ \frac{x^3}{3} \right]_0^1 = \frac{1}{3}.
+$$
+
+## Labeled Equation
+
+Syntax:
+
+```md
+$$
+E = mc^2
+$${#eq-emc2}
+```
+
+Example:
+
+$$
+E = mc^2
+$${#eq-emc2}
+
+As shown in equation @eq-emc2, energy and mass are related via the constant $c^2$.
+
+---
+
+# Figures and Tables {#sec-fig-table}
+
+## Figure with Caption and Label
+
+Syntax:
+
+```md
+![Caption text](assets/figures/productivity_paradox.png){#fig-label}
+```
+
+Example (you can point to a real image later):
+
+![Placeholder diagram](assets/figures/productivity_paradox.png){#fig-system}
+
+Reference: see figure @fig-system for the system diagram.
+
+> If you don’t have `diagram.png` yet, Quarto may warn but still render.
+> Just replace it with a real image path when you have one.
+
+## Markdown Table with Caption and Label
+
+Syntax:
+
+```md
+: Caption text {#tbl-label}
+
+| Col1 | Col2 |
+|------|------|
+| a    | b    |
+```
+
+Example:
+
+: Example configuration options {#tbl-config}
+
+| Option     | Description                      |
+|-----------|-----------------------------------|
+| `format`  | Output formats (html, pdf, docx)  |
+| `execute` | Code execution controls           |
+
+Reference: see table @tbl-config for configuration keys.
+
+---
+
+# Tabs (`panel-tabset`) {#sec-tabs}
+
+Syntax:
+
+```md
+::: {.panel-tabset}
+## Tab 1
+Content A
+## Tab 2
+Content B
+:::
+```
+
+Example:
+
+::: {.panel-tabset}
+## Authoring
+
+You write in:
+
+- Plain **Markdown** / `.qmd`
+- With optional:
+  - callouts
+  - diagrams
+  - math
+  - code blocks
+
+## Outputs
+
+Quarto renders to:
+
+- **HTML** (web)
+- **PDF** (print)
+- **DOCX** (Word)
+:::
+
+---
+
+# Columns Layout {#sec-columns}
+
+Syntax:
+
+```md
+:::{.columns}
+::: {.column width="50%"}
+Left column.
+:::
+::: {.column width="50%"}
+Right column.
+:::
+:::
+```
+
+Example:
+
+:::{.columns}
+::: {.column width="50%"}
+**Left Column**
+
+- Good for side-by-side comparisons  
+- Show prose, lists, or explanations here  
+- Nicely readable even in PDF
+:::
+::: {.column width="50%"}
+**Right Column**
+
+- Show diagrams, code, or tables here  
+- Works well for “before vs after”  
+- Useful in technical reports
+:::
+:::
+
+---
+
+# Footnotes {#sec-footnotes}
+
+Syntax:
+
+```md
+This is a sentence with a footnote.[^1]
+
+[^1]: Footnote content.
+```
+
+Example:
+
+This is a sentence with a footnote.[^1]
+
+[^1]: This is the **footnote content**, appearing at the bottom of the page (PDF) or document (HTML).
+
+---
+
+# Simple Citations (Optional) {#sec-citations}
+
+To use citations, you need:
+
+1. A BibTeX file, e.g. `refs.bib`
+2. A reference in the YAML, e.g.:
+
+   ```yaml
+   bibliography: refs.bib
+   ```
+
+3. Citations like `[@key]` in the text.
+
+Minimal YAML example (uncomment if you create `refs.bib`):
+
+```yaml
+# bibliography: refs.bib
+# csl: nature.csl
+```
+
+Example citation (will become active once you wire `refs.bib`):
+
+Modern document conversion is often built around Pandoc [@pandoc].
+
+---
+
+# Section, Figure, Table, Equation Cross-Refs {#sec-crossref}
+
+Examples of references already used in this file:
+
+- Section reference: see @sec-callouts for callout examples.
+- Mermaid diagrams: see @sec-mermaid.
+- Code listing: see listing @lst-add-func.
+- Equation: see equation @eq-emc2.
+- Figure: figure @fig-system.
+- Table: table @tbl-config.
+
+Pattern:
+
+- `@sec-id` for sections
+- `@fig-id` for figures
+- `@tbl-id` for tables
+- `@eq-id` for equations
+- `@lst-id` (or generic `@id`) for code listings
+
+IDs come from `{#id}` after headings or captions.
+
+---
+
+# Final Checklist {#sec-final}
+
+This **single file** shows:
+
+- ✅ YAML header with multi-format output (HTML, PDF, DOCX)  
+- ✅ All core **callout** types:
+  - `note`, `tip`, `warning`, `caution`, `important`
+- ✅ A **Mermaid** diagram
+- ✅ **Code blocks** (basic + labeled listing)
+- ✅ **Math**:
+  - Inline
+  - Display
+  - Labeled equation with cross-ref
+- ✅ **Figure** with caption + label
+- ✅ **Table** with caption + label
+- ✅ **Tabs** using `panel-tabset`
+- ✅ **Columns** layout
+- ✅ **Footnotes**
+- ✅ Citation syntax (optional, if you add a `.bib`)
+
+You can now:
+
+1. Copy this file as a starting template.
+2. Strip out the sections you don’t need.
+3. Adapt the YAML and structure for real documents.
+
+This is your **one-file Quarto cheat sheet**.
