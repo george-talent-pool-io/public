@@ -21,6 +21,7 @@ This single `.qmd` file demonstrates, **actually rendered**:
 - Multiple outputs: **HTML**, **PDF**, **DOCX**
 - All **callout** types (`note`, `tip`, `warning`, `caution`, `important`)
 - A **Mermaid diagram** that is **scaled to page width** in PDF
+- **External images** with sizing and caption options
 - Real **code blocks** (with syntax highlighting)
 - **Math** (inline + display)
 - A **table** with caption
@@ -146,6 +147,39 @@ flowchart LR
 
 If Mermaid does **not** render in HTML, check that your Quarto version supports it.  
 If it fails in **PDF**, install either `chromium` or `mermaid-cli` so Quarto can render the diagram to an image.
+
+---
+
+# External Images
+
+You can include external images (PNG, JPG, SVG, etc.) in your Quarto documents using standard Markdown image syntax.
+
+## Syntax
+
+Basic image:
+
+````markdown
+![Alt text](path/to/image.png)
+````
+
+With figure ID and caption:
+
+````markdown
+![Caption text](path/to/image.png){#fig-id}
+````
+
+With width control:
+
+````markdown
+![Caption text](path/to/image.png){#fig-id width="50%"}
+````
+
+## Live Example
+
+![Logo](assets/figures/logo.png){#fig-logo width="200px"}
+
+Images are automatically included in all output formats (HTML, PDF, DOCX).  
+Use the `width` or `height` attributes to control image size, or use percentage values for responsive sizing.
 
 ---
 
@@ -329,6 +363,7 @@ This **single file** shows:
 - ✅ All core **callout** types:
   - `note`, `tip`, `warning`, `caution`, `important`
 - ✅ A **Mermaid** diagram whose width is controlled for PDF via `fig-width`
+- ✅ **External images** with sizing and caption options
 - ✅ Real **code blocks** with syntax highlighting
 - ✅ Real **math** (inline + display)
 - ✅ A **table** with caption

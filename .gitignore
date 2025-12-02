@@ -1,3 +1,5 @@
+node_modules/
+
 quarto-cheatsheet_files/
 quarto-cheatsheet-fixed_files/
 quarto-cheatsheet-mermaid-scaled_files/
